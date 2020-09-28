@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="widht=device-widht,initial-scale=1.0">
+  <title>Sintra form registration</title>
+  <script src="https://kit.fontawesome.com/5875e21e6e.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css" class="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>Registrati Qui</h2>
+    </div>
+    <form class="form" id="form" onsubmit="return validate();">
+      <div class="form-control">
+        <label>Nome</label>
+        <input type="text" name="" id="nome" placeholder="Nome per intero">
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error Msg</small>
+      </div>
+
+      <div class="form-control">
+        <label>Email</label>
+        <input type="email" name="" id="email" placeholder="Email">
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error Msg</small>
+      </div>
+
+      <div class="form-control">
+        <label>Indirizzo</label>
+        <input type="text" name="" id="indirizzo" placeholder="Facoltativo">
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error Msg</small>
+      </div>
+
+      <div class="form-control">
+        <label>Password</label>
+        <input type="password" name="" id="password" placeholder="Password">
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error Msg</small>
+      </div>
+
+      <div class="form-control">
+        <label>Conferma Password</label>
+        <input type="password" name="" id="cpassword" placeholder="Ripeti password">
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error Msg</small>
+      </div>
+      <button onclick="validate()" class="btn" name="">Submit</button>
+
+    </form>
+  </div>
+
+  <!--Js-->
+  <script type="text/javascript">
+
+    const form = document.getElementById('form');
+    const nome = document.getElementById('nome');
+    const email = document.getElementById('email');
+    const indirizzo = document.getElementById('indirizzo');
+    const password = document.getElementById('password');
+    const cpassword = document.getElementById('cpassword');
+
+    //add event
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      validate();
+    })
+
+    
+
+
+
+    //final data validation 
+    const successMsg = () => {
+      let formCon = document.getElementsByClassName('form-control');
+
+      var count = formCon.length - 1;
+      for (var i = 0; 1 < formCon.length; i++) {
+        if (formCon[i].className === "form-control success") {
+          var sRate = 0 + 1;
+          console.log(sRate, count);
+          sendData(count);
+        } else {
+          return false;
+        }
+      }
+    }
+    const sendData = (nomeVal, sRate, count) => {
+      if (sRate === count) {
+        alert('registrato con successo');
+        Swal("Welcome", + nomeVal, "regsitrazione effettuata con successo", "success");
+        location.href = 'demo.html?nome=${nomeVal}'
+      }
+
+    }
+
+    //more email validate
+    const isEmail = (emailVal) => {
+      var atSymbol = emailVal.indexOf("@");
+      console.log(atSymbol < 1);
+      if (atSymbol < 1) return false;
+      var dot = emailVal.lastIndexOf(".");
+      if (dot < atSymbol + 2) return false;
+      if (dot === emailVal.lenght - 1) return false;
+      return true;
+    }
+
+    //more password validate 
+    const isPassword = (passwordVal) => {
+      var atSymbol = passwordVal.indexOf("@");
+      console.log(atSymbol > 1);
+      if (atSymbol < 1) return false;
+      var atSymbol = passwordVal.indexOf("!");
+      if (atSymbol < 1) return false;
+      var atSymbol = passwordVal.indexOf("/");
+      if (atSymbol < 1) return false;
+      return true;
+
+    }
+
+
+    //define the validate function
+
+    const validate = () => {
+      const nomeVal = nome.value.trim();
+      const emailVal = document.getElementById("email").value;
+      const indirizzoVal = indirizzo.value.trim();
+      const passwordVal = password.value.trim();
+      const cpasswordVal = cpassword.value.trim();
+
+
+
+
+
+      //validate indirizzo
+      if (indirizzoVal === "") {
+
+      } else if (indirizzo.value.length < 10) {
+        setErrorMsg(indirizzo, 'indirizzo min 10 caratteri');
+      } else {
+        setSuccessMsg(indirizzo);
+      }
+
+      //validate nome
+      if (nomeVal === "") {
+        setErrorMsg(nome, 'il campo è vuoto');
+      } else if (nomeVal.length < 2) {
+        setErrorMsg(nome, 'nome min 3 caratteri');
+      } else {
+        setSuccessMsg(nome);
+      }
+
+      //validate email
+      if (emailVal === "") {
+        setErrorMsg(email, 'il campo è vuoto');
+      } else if (!isEmail(emailVal)) {
+        console.log(emailVal);
+        setErrorMsg(email, 'inserisci un email valida');
+      } else {
+        setSuccessMsg(email);
+      }
+
+      //validate password
+      if (passwordVal === "") {
+        setErrorMsg(password, 'il campo è vuoto');
+      } else if (password.value.length < 10) {
+        setErrorMsg(password, 'la password deve contenere minimo 10 caratteri');
+      } else if (!isPassword(passwordVal)) {
+        setErrorMsg(password, 'la password deve avere un numero e 3 caratteri speciali (@ ! /)');
+      } else {
+        setSuccessMsg(password);
+      }
+
+      //validate cpassword
+      if (cpasswordVal === "") {
+        setErrorMsg(cpassword, 'il campo è vuoto');
+      } else if (password.value != cpassword.value) {
+        setErrorMsg(cpassword, 'la password non corrisponde');
+      } else {
+        setSuccessMsg(cpassword);
+      }
+
+      console.log(emailVal);
+      console.log(email);
+    }
+
+
+
+    function setErrorMsg(input, erorrmsg) {
+      const formControl = input.parentElement;
+      const small = formControl.querySelector('small');
+      formControl.className = "form-control error";
+      small.innerText = erorrmsg;
+    }
+
+    function setSuccessMsg(input) {
+      const formControl = input.parentElement;
+      formControl.className = "form-control success";
+    }
+
+
+
+
+  </script>
+
+
+</body>
+</head>
+
+</html>
